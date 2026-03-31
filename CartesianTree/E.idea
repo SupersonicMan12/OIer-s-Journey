@@ -1,4 +1,24 @@
 
 Consider Max-Cartesian Tree: 
 
-a node i can be eliminated from only one of its ancestors. 
+a node i can be eliminated from only one of its ancestors. Three cases:
+
+1. i has ancestors both left and right of it:
+- this means we can clear left child or right child first, before clearing i. 
+
+DP[L] * DP[R] * TIMES{
+	+ if left is cleared, then i, 	(L+R+1) C (L+1)
+	+ if right is cleared, then i, 	(L+R+1) C (L)
+	- if both are cleared, then i, 	(L+R) C (L)
+}
+
+2. i has ancestors only to the left:
+DP[L] * DP[R] * TIMES{
+	+ (L+R+1) C (L+1)
+}
+
+3. i has ancestors only to the right:
+DP[L] * DP[R] * TIMES{
+	+ (L+R+1) C (L)
+}
+
