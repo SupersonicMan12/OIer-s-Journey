@@ -1,0 +1,35 @@
+Cartesian Trees from first principles
+
+Cartesian Tree = bridge between linear list and hierarchial tree!
+
+A cartesian tree is built from an array a[n]
+
+Two key properties:
+1. Order property: 
+elements in left subtree are left in array index to a node; 
+elements in right subtree are right in array index to a node;
+2. Heap property:
+min-Cartesian tree, parent is always smaller than child.
+
+Resulting properties:
+1. inorder traversal recovers original array: follow the tree in LEFT-x-RIGHT order
+2. each subtree is a contiguous subarray
+3. subtree root = minimum of an interval
+4. the tree is uniquely determined, follows from 3, where the minimum is unique
+5. minimum value [l, r] = the LCA of l and r:
+	- consider the LCA of l, r as x. Suppose subtree x represent [L, R]
+	- a_x is minimum in interval [L, R] and therefore also in [l, r]
+	- notice impossible for x to not be in [l, r]! If not, x is not LCA 
+
+Since tree is unique, we consider a O(n) method to construct a valid tree:
+
+Assume we have built cartisian tree for [1, i-1], inserting a_i. We maintain a stack of the rightmost chain (with root being at the bottom of the ascending stack). We pop while top is > x, the last popped will be x's left child, the first that < x (possibly nonexistent) is x's parent s.t. x is right child; a_i is added to stack.
+
+
+
+
+
+
+
+
+

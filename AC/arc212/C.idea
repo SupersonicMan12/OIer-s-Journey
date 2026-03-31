@@ -1,0 +1,20 @@
+
+Consider N balls and M indistinguishable boxes
+
+We assign even N-k balls to be pairs of blue and red, while the other k balls form the differences we care about.
+
+These k balls get distributed across M boxes:
+oOo|O|oO|O|ooOo
+
+We can force exactly one element in each interval to be chosen, then the number of ways of this total choice complex is exactly the desired product of |ai-bi|.
+
+We give each box a ball by force, giving k+M balls, separated by M-1 box separators
+oooo|oo|oooo|oo
+
+We indicate the selection of a ball as the "segment ball" by placing a | before such element. The first ball in each segment cannot be chosen because it is the mandatory ball forced on the segment. This ensures that all the final (M-1 + M) |'s take only the k+M-1 possible spots. 
+
+With this, the rest is easy: we have (k+M-1) C (2M-1) ways to place the k balls, 2^M ways to configure colors, then finally we multiply that by the number of ways to arrange the (N-k)/2 pairs:
+
+We give each section one by force, giving (N-k)/2+M-1 possible places for k-1 actual insertions, or ((N-k)/2+M-1) C (M-1)
+
+

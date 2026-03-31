@@ -1,0 +1,15 @@
+Fix spanning tree T, and XOR distance from 1 to u A_u
+
+Any walk from u to v has XOR weight = A_u ^ A_v ^ (s in span(C)), where C is any cycle in the graph. Notice that span(C) is formed by the span of xor values of the m-(n-1) cycles arising from non-tree edges with values w ^ A_u ^ A_v.
+
+We want to minimize the above quantity, which is the classic XOR linear basis:
+Greedily reduce x from highest to lowest, O(30) minimization.
+
+Define f(x) as the greedy reduction of x using the basis set of all cycle XORs
+
+Notice key result: f(x^y) = f(x)^f(y), where the same decisions are made on x^y as those made on x and y separately combined. Define B_i = f(A_i), the answer is just the number of (i,j) where Bi ^ Bj <= K.
+
+Insert B1, B2... into a trie built on their 30 bit reps, find the number of previously inserted values with ^ B_j <= K.
+- at each bit position, look at corresponding bit of K
+- if K's bit is 1, the entire subtree with xor-bit 0 is guaranteed, add size, continue to subtree where xor-bit is 1
+- if K's bit is 0, continue into the subtree where xor-bit is 0

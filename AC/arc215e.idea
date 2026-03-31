@@ -1,0 +1,5 @@
+We consider maximizing the number of 1s in A first. This we can do with a BFS with sources at the positions with 1, and obtain sequence T. This is the "maximum potential state" H we can reach.
+
+Notice how then if xi != yi, the operation P is a self-inverse: P(P(x)) = x. This means that we can do the same thing as above to B, obtaining a sequence S that we reverse to S'. If the obtained B is a 'subset' of the H, then we consider if H can "self-degenerate" into B, this means that we check for each position that needs 1 -> 0 if xi = xi, then apply this operation to do 1 -> 0.
+
+Then answer = T + S' + self-degenerate

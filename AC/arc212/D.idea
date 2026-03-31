@@ -1,0 +1,9 @@
+Consider the objective function 
+
+F(X, Y) = sum (i,j) in X a[i][j] + sum (i,j) in Y a[i][j]
+
+When we have a "bad" person, we can switch it to the other side to make them good. 
+
+Notice this necessarily increases the objective function by at least 1!!
+
+If there are no "bad" people, we are done, and this must happen because this function F(X, Y) is bounded above by 50n^2 <= 50^3. Hence brute force switching until objective is reached.

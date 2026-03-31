@@ -1,0 +1,12 @@
+N, M within 2e5
+The nodes are assigned unique 0...n, one is "eaten"
+Given the edges and the results of the XOR, 
+Find, if there is a unique "eaten", output it.
+
+Run a bfs on the graph that expresses each value in terms of x: 
+
+x xor a_i
+
+We receive a list of a_i that are non-contradictory. Otherwise -1.
+
+e.g. n = 6, and the list si

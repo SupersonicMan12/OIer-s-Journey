@@ -1,0 +1,22 @@
+Consider the set Z of sequences S such that 
+
+S is nondecreasing
+S can be written as the sum of adjacents of A with A's elements from 0 to m
+
+Notice we can increase the even terms in A by x and decrease the odd terms in A by x and vice versa.
+
+Another observation is that the even subsequence is nodecreasing, and so is the odd subsequence.
+
+Then, if S exists, there must exist a sequence A with smallest A1, this happens when A1 = 0 OR when the last A_even is m. 
+
+Hence the desired number |Z| can be written as |A1=0| + |A_lasteven=m| - |both|
+
+Consider F(x) = number of ways to choose a length x nondecreasing sequence of 0....m 
+
+F(x) = (m+1+x) C (m)
+
+If n is even:
+F(n/2)*F(n/2)+F(n/2-1)*F(n/2+1)-F(n/2)*F(n/2-1)
+
+If n is odd:
+F(n/2)*F(n/2-1)+F(n/2)*F(n/2-1)-F(n/2-1)*F(n/2-1)

@@ -1,0 +1,12 @@
+Standard Recurrence for Modular Inverses. Start from the division identity:
+
+MOD = ⌊MOD/i⌋ * i + (MOD % i)
+0 ≡ ⌊MOD/i⌋ * i + (MOD % i)  (mod MOD)
+i ≡ −(MOD % i) / ⌊MOD/i⌋  (mod MOD)
+1/i ≡ −⌊MOD/i⌋ / (MOD % i)  (mod MOD)
+
+So inv[i] = −⌊MOD/i⌋ * inv[MOD % i].
+
+Then, inv[i] = (MOD-MOD/i) * inv[MOD%i]
+
+The reason it works as a DP: (MOD % i) < i, so inv[MOD % i] is always already computed when reaching i.
