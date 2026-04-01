@@ -1,0 +1,91 @@
+Answer by Claude:
+
+This is a great rabbit hole. Let me build it up from scratch.
+
+## Groups
+
+A **group** is a set G with an operation · satisfying:
+- **Closure:** a·b ∈ G for all a, b ∈ G
+- **Associativity:** (a·b)·c = a·(b·c)
+- **Identity:** there exists e such that a·e = e·a = a
+- **Inverses:** for every a, there exists a⁻¹ such that a·a⁻¹ = e
+
+Examples: (Z, +) is a group (identity is 0, inverse of a is −a). (Z, ×) is NOT a group (most elements have no multiplicative inverse: there's no integer x with 3x = 1).
+
+## Rings
+
+A **ring** adds a second operation. A ring (R, +, ×) has:
+- (R, +) is a group (with identity 0)
+- × is associative with identity 1
+- × distributes over +
+
+Example: (Z, +, ×) is a ring. You can add, subtract, multiply. But you still can't divide — 1/3 isn't an integer.
+
+## Fields
+
+A **field** is a ring where every nonzero element has a multiplicative inverse. That is, (F \ {0}, ×) is also a group.
+
+Examples:
+- (Q, +, ×) — the rationals. Every nonzero rational has an inverse: (a/b)⁻¹ = b/a. This is the "natural" setting for probability.
+- (R, +, ×) — the reals. Also a field.
+
+These are the fields you're used to. The deep fact is: **there are finite fields too.**
+
+## Z/pZ — the finite field with p elements
+
+Take the integers {0, 1, 2, …, p−1} with addition and multiplication mod p, where p is prime. Call this Z/pZ or F_p.
+
+**Claim:** this is a field.
+
+Addition forms a group (obvious — inverses are just −a mod p). The key question is: does every nonzero element have a multiplicative inverse?
+
+**Yes, and here's why.** Take any a with 1 ≤ a ≤ p−1. Consider the map f(x) = a·x mod p on the set {1, 2, …, p−1}. This map is injective: if a·x ≡ a·y (mod p), then p | a(x−y), and since p is prime and p ∤ a, we get p | (x−y), so x = y. An injective map from a finite set to itself is surjective. So some x maps to 1, meaning a·x ≡ 1 (mod p). That x is a⁻¹.
+
+This fails for composite n. In Z/6Z: 2·3 ≡ 0 (mod 6). The element 2 has no inverse because it's a "zero divisor." Z/nZ is a field if and only if n is prime.
+
+## The connection: field homomorphisms
+
+Now here's the key idea that makes competitive programming modular arithmetic work.
+
+Your DP computes a rational number — some fraction a/b where a, b ∈ Z. The computation is a sequence of +, −, ×, ÷ operations starting from integers. This means you're working in Q, the field of rationals.
+
+There is a natural map φ: Q → F_p defined by:
+
+φ(a/b) = a · b⁻¹ mod p
+
+This map is a **field homomorphism**, meaning:
+- φ(x + y) = φ(x) + φ(y)
+- φ(x · y) = φ(x) · φ(y)
+- φ(x / y) = φ(x) / φ(y)
+
+(It's defined for all rationals a/b where p ∤ b.)
+
+Because φ respects all field operations, **any expression built from +, −, ×, ÷ gives the same result whether you evaluate it in Q first and then apply φ, or apply φ to the inputs first and compute in F_p.** In symbols:
+
+φ(f(x₁, x₂, …)) = f(φ(x₁), φ(x₂), …)
+
+for any rational expression f.
+
+This is exactly what's happening in the code. The "true" answer is some rational number like 11/25. The code never computes 11/25 as a fraction — it works entirely in F_{998244353}, performing every +, −, ×, ÷ mod 998244353. By the homomorphism property, the final Mint value equals φ(11/25) = 11 · 25⁻¹ mod 998244353, which is what the problem asks for.
+
+## When this breaks
+
+This only works for **field operations** (+, −, ×, ÷). It does NOT work for:
+
+- **Comparisons:** φ(3) = 3 and φ(−4) = 998244349, so 3 < 998244349 in Z, but the "true" comparison is 3 > −4. Order is meaningless in F_p.
+- **Integer-specific operations:** floor, mod, gcd, bit operations. These don't exist in a general field.
+- **When a denominator is divisible by p:** φ(1/p) is undefined. This is why the problem guarantees the answer "can be expressed as p/q where q ≢ 0."
+
+So the rule is: if your computation is purely rational arithmetic (no branches depending on values, no floors, no comparisons), you can do it entirely in F_p and get the right answer. This is why DP + combinatorics + probability problems work so cleanly with modular arithmetic.
+
+## Summary of the algebraic hierarchy
+
+```
+Group       (one operation, has inverses)
+  ↓ add a second operation
+Ring        (two operations: +, ×)
+  ↓ require multiplicative inverses
+Field       (two operations: +, ×, both with inverses)
+```
+
+Z/pZ is a field. Q is a field. The map Q → Z/pZ is a field homomorphism. That's the entire reason competitive programming modular arithmetic works for probability and counting problems.

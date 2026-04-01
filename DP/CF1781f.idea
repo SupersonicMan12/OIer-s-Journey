@@ -1,0 +1,46 @@
+Tutorial: https://codeforces.com/blog/entry/111783
+
+"keep thinking about number of ways, not probability"
+
+We are motivated by the number of times each space encapsuled within ()
+
+Reformulate the problem as follows:
+- we start with [0]
+- for n times, choose a random element x:
+	- with probability p, change to [x, x+1, x]
+	- with probability 1-p, change to [x, x-1, x]
+
+Define f(n, x) as the number of valid ways to expand n times starting from [x]. 
+f(n, x) = 0 whenever x < 0;
+
+Case 1: we insert () on x: [x x+1 x]
+We can choose i for left, j for middle, n-1-i-j for right.
+This gives p * SUMi(SUMj{
+	f(i, x) * f(j, x+1) * f(n-1-i-j, x) * (n-1)C(j) * (n-1-j)C(i)
+})
++
+Case 2: we insert )( on x: [x x-1 x]
+We can choose i for left, j for middle, n-1-i-j for right.
+This gives (1-p) * SUMi(SUMj{
+	f(i, x) * f(j, x-1) * f(n-1-i-j, x) * (n-1)C(j) * (n-1-j)C(i)
+})
+
+Gives a solution in O(n^4)
+
+Optimization: notice how only j is relevant in the different terms.
+
+Rewrite formula into f(n,x) = SUM(j=0 to n-1){
+	(p * f(j, x+1) + (1-p) * f(j, x-1)) * (n-1)C(j) SUM(i=0 to n-1-j){
+		f(i,x) * f(n-1-i-j,x) * (n-1-j)C(i)
+	}
+}
+
+Auxiliary: g(k, x) = SUM(i=0 to k) kCi * f(i, x) * f(k-i, x)
+
+Then, f(n, x) = SUM(j=0 to n-1) (p*f(j,x+1)+(1-p)*f(j,x-1)) * (n-1)Cj * g(n-1-j,x)
+
+Both can be computed in O(n) time per element, giving O(n^3) to pass.
+
+
+
+
