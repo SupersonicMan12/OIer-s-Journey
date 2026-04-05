@@ -1,0 +1,6 @@
+
+https://oi-wiki.org/dp/opt/slope/
+
+2. Slope Optimization: given O(N^2) transitions over DP[N], 
+
+We can speed up transitions to O(N) by introducing a plane of lines, where each position [I] is a line and we maintain a convex set of lines that form an optimal frontier

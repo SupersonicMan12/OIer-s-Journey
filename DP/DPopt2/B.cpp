@@ -1,55 +1,81 @@
+// proof of decision monotonicity
+// consider a sequence of points {wi, hi} where
+// hi increases, wi decreases. 
+// notice w[i, j] = w[i+1] * h[j];
+// Wish: 
+// w[i, j] + w[i+1, j+1] - w[i, j+1] - w[i+1, j-1] <= 0;
+// LHS = w[i+1] * h[j] + w[i+2] * h[j+1] - w[i+1] * h[j+1] - w[i+2] * h[j]
+// 	   = (w[i+1]-w[i+2]) * (h[j]-h[j+1]) <= 0;
+
 #include <bits/stdc++.h>
 using namespace std;
 
 int n;
-pair<int,int> a[50005];
-pair<int,int> b[50005];
-long long w[50005], h[50005];
 long long dp[50005];
-int Q[50005];
+pair<int,int> a[50005];
+int ww[50005], h[50005];
+struct interval{
+	int l, r, x;
+} q[50005];
 
-bool check(int i, int j, int k){
-	return ((dp[i]-dp[j])*(w[j+1]-w[k+1]) <= (dp[j]-dp[k])*(w[i+1]-w[j+1]));
+long long w(int x, int y){
+	return 1LL*ww[x+1]*h[y];
 }
 
-long long evaluate(int x, int i){
-	return w[x+1] * h[i] + dp[x];
+long long ev(int from, int to){
+	return dp[from] + w(from, to);
+}
+
+// first position of i winning
+int binary_search(int i, int head){
+	int l = q[head].l, r = q[head].r, x = q[head].x;
+	if (ev(i,r) > ev(x,r)) return r+1;
+	while (l < r){
+		int mid = (l+r)>>1;
+		if (ev(i,mid) <= ev(x,mid)) r = mid;
+		else l = mid+1;
+	}
+	return l;
 }
 
 int main(){
-	cin >> n;
+	cin >> n ;
 	for (int i = 1; i <= n; i++){
 		cin >> a[i].first >> a[i].second;
 	}
-	sort(a+1, a+n+1);
+	sort(a+1, a+1+n);
 	int cnt = 0;
 	for (int i = 1; i <= n; i++){
-		while (cnt > 0 && b[cnt].second <= a[i].second){
-			cnt--;
-		}
-		b[++cnt] = a[i];
-	}
-	for (int i = 1; i <= cnt; i++){
-		h[i] = b[i].first;
-		w[i] = b[i].second; 
+		while (cnt && ww[cnt] <= a[i].second) cnt--;
+		h[++cnt] = a[i].first;
+		ww[cnt] = a[i].second;
 	}
 
-	// dp[i] = MIN(dp[j] + w[j+1] * h[i])
-	// force dp[j] as yinte and w[j+1] as slope, 
-	// slope descends
-	// start with dp[0] = 0, Q[1] = 0
 	int head = 1, tail = 1;
+	q[1] = {1,cnt,0};
 	for (int i = 1; i <= cnt; i++){
-		while (tail < head && evaluate(Q[tail], i) >= evaluate(Q[tail+1], i)){
-			tail++;
-		}
-		dp[i] = evaluate(Q[tail], i);
-		while (head - tail > 0 && check(Q[head-1], Q[head], i)){
+		int j = q[tail].x;
+		dp[i] = dp[j] + w(j,i); 
+		while (head >= tail && ev(q[head].x, q[head].l) >= ev(i, q[head].l)){
 			head--;
 		}
-		Q[++head] = i;
+		// right now head is not completely winning
+		// u is first position still winning
+		int u = binary_search(i, head);
+		if (u <= cnt){
+			q[head].r = u-1;
+			q[++head] = {u, cnt, i};
+		}
+		if (i == q[tail].r) tail++;
 	}
 	cout << dp[cnt] << '\n';
 
 	return 0;
 }
+
+
+// best transitions 00000000
+// then 			00001111
+// then 			00001122
+
+

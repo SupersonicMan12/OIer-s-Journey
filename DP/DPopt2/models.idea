@@ -1,7 +1,7 @@
 
 https://oi-wiki.org/dp/opt/quadrangle/
 
-1. Quadrilateral Inequality Optimization:
+1. Quadrilateral Inequality Optimization / Decision Monotonicity:
 
 Suppose we want f(i) = min (j in [1, i]) w(j, i), where w(j, i) in O(1)
 
@@ -11,13 +11,13 @@ Decision Monotonicity is whenever i < j, we have (*) opt(i) <= opt(j)
 
 opt(x) = the i that gave the minimal w(i, x) when converting to x
 
-(*) is equivalent to for all (i, j){
+The most simple way to show (*) is to show that for all (i, j){
 	
 	w[i, j] + w[i+1, j+1] <= w[i, j+1] + w[i+1, j]
 
 }
 
-A stronger version of this is for all (a<=b<=c<=d){
+We can telescope the above to obtain (a<=b<=c<=d){
 	w[a, c] + w[b, d] <= w[a, d] + w[b, c]
 }
 
@@ -43,6 +43,3 @@ Consider w(x, y) as a graph on a 2D domain. We have
 w[a,c]-w[b,c] <= w[a,d]-w[b,d], or dw/dx at c <= dw/dx at d
 
 dw/dx at d - dw/dx at c >= 0, or d(dw/dx)/dy = d^2w/dx/dy >= 0.
-
-
-2. Slope Optimization
