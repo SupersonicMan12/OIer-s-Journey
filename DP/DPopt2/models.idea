@@ -1,0 +1,48 @@
+
+https://oi-wiki.org/dp/opt/quadrangle/
+
+1. Quadrilateral Inequality Optimization:
+
+Suppose we want f(i) = min (j in [1, i]) w(j, i), where w(j, i) in O(1)
+
+The time complexity is O(n^2). 
+
+Decision Monotonicity is whenever i < j, we have (*) opt(i) <= opt(j)
+
+opt(x) = the i that gave the minimal w(i, x) when converting to x
+
+(*) is equivalent to for all (i, j){
+	
+	w[i, j] + w[i+1, j+1] <= w[i, j+1] + w[i+1, j]
+
+}
+
+A stronger version of this is for all (a<=b<=c<=d){
+	w[a, c] + w[b, d] <= w[a, d] + w[b, c]
+}
+
+Intution: as i increases, its opt(i) will not decrease / go back!
+
+Proof. Suppose we have the stronger version, we wish to obtain Decision Monotonicity.
+
+We wish to show that if opt(i) = p, then opt(i+1) >= p. Suppose opt(i+1) = q < p. This means:
+
+for state i, p beats q, dp[p] + w[p,i] <= dp[q]+w[q,i];
+
+for state i+1, q beats p, dp[q] + w[q,i+1] < dp[p]+w[p,i+1];
+
+Adding, w[p,i] + w[q,i+1] < w[q,i] + w[p,i+1], which contradicts:
+
+w[p,i] + w[q, i+1] >= w[q,i] + w[p,i+1] by the given quadratic inequality.
+
+
+What does the "strong version" feel like? 
+
+Consider w(x, y) as a graph on a 2D domain. We have
+
+w[a,c]-w[b,c] <= w[a,d]-w[b,d], or dw/dx at c <= dw/dx at d
+
+dw/dx at d - dw/dx at c >= 0, or d(dw/dx)/dy = d^2w/dx/dy >= 0.
+
+
+2. Slope Optimization
