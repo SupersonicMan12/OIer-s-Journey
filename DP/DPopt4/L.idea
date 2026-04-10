@@ -1,0 +1,13 @@
+ICPC 2015 World Final K Tours
+P6914 [ICPC 2015 WF] Tours
+
+Observe that we want all k such that G can be divided s.t. each cycle has the same number of edges of each color. k clearly needs to divide each cycle length, however, this is SUFFICIENT!
+
+Notice then how bridges do not affect the answer, so remove them. Now the graph is bridgeless.
+
+The question is equivalent to finding the gcd of all cycle lengths
+
+Build a dfs tree T, we show that the gcd of fundamental cycles g divides all cycles. Notice this means ans <= g, but then if g works then ans = g
+
+For each edge (u, v) define w(u, v) = dep[u] - dep[v] (mod g). For a tree edge from parent to child c, w = dep[c] - dep[p] = 1. 
+

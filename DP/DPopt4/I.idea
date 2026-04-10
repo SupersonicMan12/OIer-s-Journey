@@ -1,0 +1,19 @@
+// Atcoder ARC70E - NarrowRectangles
+
+Define 
+
+f[i][x] = minimum cost of connecting everything <= ith row, with last l on x
+
+and w[i] = r[i]-l[i]
+
+Fix ith row to x left, x >= y+w[i-1], x <= y-w[i]
+
+f[i][x] = |x-li| + MIN(x-w[i-1] <= y <= x+w[i]) f[i-1][y]
+
+We see that f[1] is convex up (of line segments), it is easy to see that if
+f[i-1] satisfies this, so does f[i].
+
+We see that at i, the possible slopes are -i, -(i-1)... 0, 1, ... i-1, i
+and we can maintain the points at which the slopes change.
+
+
