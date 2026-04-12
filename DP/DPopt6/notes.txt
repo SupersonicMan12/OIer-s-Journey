@@ -1,0 +1,58 @@
+Problem A.
+
+Given a[1...n]. Find the smallest cost to combine all into one, where "combine" means to take two adjacent elements and merge them into one pile at cost their sum. 
+
+O(n^3): dp[i][j] = minimum cost to merge [i,j], 
+dp[i][j] = min(dp[i][k]+dp[k][j]) + sum[i][j]
+
+O(n^2): notice:
+here w[a,c] + w[b,d] <= w[a,d] + w[b,c] because both sides are equal
+w(i,j) satisfied quadrangle inequality and is monotone (w[a', b'] <= w[a, b] whenever i<=i'<=j'<=j), then dp also satisfies quadrangle inequality (*). Then (Knuth 1971, Yao 1980): opt(i, j) <= opt(i, j+1) <= opt(i+1, j+1) (**), where opt(i, j) is the best k for finding dp[i, j]
+
+Proof (*): we need for all i < j dp[i][j] + dp[i-1][j+1] <= dp[i+1][j] + dp[j+1]. Suppose dp[i+1][j] and dp[i][j+1] had decisions x and y, respectively. Then,
+
+dp[i][j] + dp[i+1][j+1] 
+= dp[i][x]+dp[x+1][j]+w[i][j]+dp[i+1][y]+dp[y+1][j+1] + w[i+1][j+1]
+<= dp[i][x]+dp[x+1][j]+w[i][j+1]+dp[i+1][y]+dp[y+1][j+1]+w[i+1][j]
+<= dp[i][x]+dp[x+1][j+1]+w[i][j+1]+dp[i+1][y]+dp[y+1][j]+w[i+1][j]
+= dp[i][j+1] + dp[i+1][j]
+
+where the fourth line is due to induction from small intervals to large
+
+Proof (**): opt[i][j] <= opt[i][j+1]:
+
+(intuition: when you move right, the split point stays or shifts right)
+
+Take i < j, let dp[k][i][j] be the dp value of [i][j] when border k:
+Due to quadrangle: k <= k' <= j
+dp[k][j] + dp[k'][j+1] <= dp[k'][j] + dp[k][j+1]
+With w[i][j] + dp[i][k-1] + dp[i][j+1] + dp[i][k'-1] added on both sides:
+dp[k][i][j] + dp[k'][i][j+1] <= dp[k'][i][j] + dp[k][i][j+1]
+dp[k][i][j] - dp[k'][i][j] <= dp[k][i][j+1] - dp[k'][i][j+1]
+If dp[k'][i][j] <= dp[k][i][j], then dp[k'][i][j+1] <= dp[k][i][j+1]
+...
+
+Same with opt[i][j+1] <= opt[i+1][j+1]
+
+Method: opt[i][j] within [opt[i][j-1], opt[i+1][j]]
+
+Finally proof (***) this is O(N^2)
+
+Work(len) = sum(i from 1 to n-len+1) (opt[i+1][j]-opt[i][j-1]+1)
+
+= opt[n-len+2] - opt[1][len-1] + (n-len+1) <= 2n
+
+Then over n Works, we have O(n^2)
+
+
+
+
+
+
+
+
+
+
+
+
+

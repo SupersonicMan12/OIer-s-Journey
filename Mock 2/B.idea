@@ -1,0 +1,49 @@
+Problem statement, given nondescending a1 .... an, q queries of x
+Find the sum of ar - al such that cost(al, a{l+1}, ... ar) <= x.
+where cost(S) = MIN (across all pairings) {the Maximum pair-sum}
+n <= 100000, q <= 500, ai <= 1e9, x <= 2e9
+
+Clearly the best pairing is: for even, first with last etc.; for odd, largest one single, the rest same as even.
+
+O(qn^2) solution. For each q, enumerate the n^2 possible intervals in the following way:
+- even intervals: expand from a given x x+1 outwards
+- odd intervals: expand from a given x x+1 outwards, and add the single
+
+O(qn) solution
+
+Notice that for given l, cost is nondecreasing with increasing r:
+If [l, r] is even, then [l, r+1] has one more a[r+1]. So greater or equal to
+If [l, r] is odd, then [l, r+1]:
+- a[l] + a[r-1] <= a[l] + a[r+1];
+- a[l+1] + a[r-2] <= a[l+1] + a[r];
+- until
+- a[mid] + a[mid+1] <= a[mid]+ a[mid+3]
+- a[r] <= a[l+1] + a[r]
+hence all of [l, r] is dominated.
+
+Then for a given l, we need to find the largest r that still has cost(al.. ar) <= x.
+
+Suppose l has r, we claim that l-1 has r' in {r-1, r, r+1}:
+- if [l, r] is even. r' in {r, r+1}:
+	- [l-1, r] satisfies by making a[l-1] by itself
+	- [l-1, r+1] satisfies if a[l-1]+a[r+1] <= x	
+	- [l-1, r+2] FAILS, because it means [l-1, r+1] also satisfies, 
+		meaning [l, r+1] satisfies (by removing l), contradiction wth r being largest.
+- if [l, r] is odd. r' in {r-1, r, r+1}:
+	- [l-1, r-1] satisfies, because any arrangement can be mirrored and made larger in [l,r]
+	- [l-1, r] satisfies if a[l-1] + a[r] <= x
+	- [l-1, r+1] satisfies if in addition a[r+1] <= x
+	- [l-1, r+2] FAILS, because it means [l, r+1] also satisfies, contradiction.
+
+Therefore, r' in {r-1, r, r+1}, test using the criteria given.
+
+
+
+
+
+
+
+
+
+
+

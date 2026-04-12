@@ -1,0 +1,28 @@
+Problem Statement
+
+Define a stamp as a string S. We have a text T. We can stamp S on T whenever all characters are concurrent.
+Two characters are connected iff there exists an S covering both together. Let |S| = n.
+
+For k = 1, 2... n connected components, find the smallest length of T to create such a graph.
+If such graph is not possible to make, return 0.
+
+n <= 5000
+
+A (10 points). S is a string of 'a'. The answer is 2 0 0 .... 0 0 1
+
+B (15 points). Enumerate all possible stamps, go over all positions, roughly O(n^3) if string hashing
+
+C (20 points). Only a's and b's, at most 2b's. 
+
+- possible aa
+- aaaab
+- baaaa
+- aaaabaaaa
+- bb rarely.
+
+Done in O(n^2)
+
+D (25 points). n <= 1000. For each of the n^2 stamps, store the possible ending positions in P. How to find P?
+
+	1. Rolling hashing window. Go from length 1 to n, we slide window of that length and create buckets of points positions that share P
+	2. KMP on all suffixes [i...n]. The fail tree creates groups that are the same. 

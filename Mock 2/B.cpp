@@ -3,37 +3,36 @@ using namespace std;
 
 int n, q, x;
 long long a[100005];
-
-long long suma(int l, int r){
-	if (l > r) return 0;
-	int mid = (l+r)>>1;
-	return a[mid]-a[l-1];
-}
+long long s[100005];
 
 int main(){
+	freopen("match.in", "r", stdin);
+	freopen("match.out", "w", stdout);
 	cin >> n >> q;
 	for (int i = 1; i <= n; i++){
 		cin >> a[i];
-		a[i]+=a[i-1];
+		s[i] = s[i-1]+a[i];
 	}
 	while (q--){
-		cin >> x;
 		long long ans = 0;
-		for (int i = 1; i <= n; i++){
-			// consider the second half sum 
-			// of [i, mid]
-			// find first with sum >=
-			// then [i, r] 
-			// are all valid intervals
-			int l = i, r = n+1;
-			while (l < r){
-				int mid = (l+r)>>1;
-				if (suma(i,mid)>x) r = mid;
-				else l = mid+1;
+		cin >> x;
+		int R = n;
+		while (R && a[R] > x) R--;
+		int r = R;
+		// r is maintained as largest such that [l, r] works.
+		for (int l = R; l >= 1; l--){
+			if (r > l) ans += (s[r]-s[l])-a[l]*(r-l);
+			if (l==1) break;
+			// even case
+			if ((r-l)%2){
+				if (r+1 <= n && a[l-1]+a[r+1] <= x) r++;
+			} else {
+				if (a[l-1]+a[r] <= x) {
+					if (r+1 <= n && a[r+1] <= x) r++;
+				} else {
+					r--;
+				}
 			}
-			r--;
-			ans += a[r]-a[i-1];
-			ans -= 1LL*(a[i]-a[i-1])*(r-i+1);
 		}
 		cout << ans << '\n';
 	}

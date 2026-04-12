@@ -1,47 +1,55 @@
 #include <bits/stdc++.h>
 using namespace std;
 int n, H;
-int w[1000005], h[1000005];
+long long w[1000005];
+int h[1000005];
 int l[1000005], r[1000005];
 int ll[1000005], rr[1000005];
-int cl[1000005], cr[1000005];
-int p[1000005];
+long long cl[1000005], cr[1000005];
+int links[1000005], rechts[1000005];
+vector<int> G[1000005];
 
-bool sp(int x, int y){ 
-	return h[x] < h[y] || (h[x] == h[y] && x < y); 
+void Delete(int x){
+	links[rechts[x]] = links[x];
+	rechts[links[x]] = rechts[x];
 }
 
 int main(){
-	freopen("ex_poster.in", "r", stdin);
-	freopen("ex_poster.ans", "w", stdout);
+	freopen("poster.in", "r", stdin);
+	freopen("poster.out", "w", stdout);
 	ios::sync_with_stdio(0);
 	cin.tie(0);
 	cin >> n >> H;
+	int hmax = 0;
 	for (int i = 1; i <= n; i++){
 		cin >> h[i] >> w[i];
+		hmax = max(hmax, h[i]);
 		w[i] += w[i-1];
-	}
-	for (int i = 1; i <= n; i++) p[i]=i;
-	sort(p+1, p+n+1, sp);
-	set<int> I;
-	I.insert(0); I.insert(-1);
-	I.insert(n+1); I.insert(n+2);
-	for (int i = 1; i <= n; i++){
-		auto idx = lower_bound(I.begin(), I.end(), i);
-		l[p[i]] = *(--idx);
-		ll[p[i]] = *(--idx);
-		idx++;
-		r[p[i]] = *(++idx);
-		rr[p[i]] = *(++idx);
-		I.insert(i);
+		G[h[i]].push_back(i);
 	}
 	for (int i = 1; i <= n; i++){
-		if (l[i]==-1) l[i] = 0;
-		if (ll[i]==-1) ll[i] = 0;
-		if (r[i]==n+2) r[i] = n+1;
-		if (rr[i]==n+2) rr[i] = n+1;
+		links[i] = i-1;
+		rechts[i] = i+1;
 	}
-
+	for (int i = hmax; i >= H+1; i--){
+		for (int v : G[i]) Delete(v);
+		for (int v : G[i]){
+			l[v] = links[v];
+			r[v] = rechts[v];
+		}
+	}
+	for (int i = H; i >= 1; i--){
+		for (int v: G[i]) Delete(v);
+		for (int v : G[i]){
+			l[v] = links[v];
+			r[v] = rechts[v];
+			ll[v] = (links[v]==0)?0:links[links[v]];
+			rr[v] = (rechts[v]==n+1)?n+1:rechts[rechts[v]];
+		}
+	}
+	// for (int i = 1; i <= n; i++){
+	// 	cout << ll[i] << rr[i] << '\n';
+	// }
 	long long ans = 0;
 	// case 1: original
 	for (int i = 1; i <= n; i++){

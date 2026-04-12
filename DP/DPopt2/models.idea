@@ -9,6 +9,8 @@ The time complexity is O(n^2).
 
 Decision Monotonicity is whenever i < j, we have (*) opt(i) <= opt(j)
 
+Intuition: as i increases, its opt(i) will not decrease / go back!
+
 opt(x) = the i that gave the minimal w(i, x) when converting to x
 
 The most simple way to show (*) is to show that for all (i, j){
@@ -21,9 +23,9 @@ We can telescope the above to obtain (a<=b<=c<=d){
 	w[a, c] + w[b, d] <= w[a, d] + w[b, c]
 }
 
-Intution: as i increases, its opt(i) will not decrease / go back!
+These two statements are equivalent.
 
-Proof. Suppose we have the stronger version, we wish to obtain Decision Monotonicity.
+Proof. Suppose we have the latter, we wish to obtain Decision Monotonicity.
 
 We wish to show that if opt(i) = p, then opt(i+1) >= p. Suppose opt(i+1) = q < p. This means:
 
