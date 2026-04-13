@@ -3,7 +3,7 @@ Problem A.
 Given a[1...n]. Find the smallest cost to combine all into one, where "combine" means to take two adjacent elements and merge them into one pile at cost their sum. 
 
 O(n^3): dp[i][j] = minimum cost to merge [i,j], 
-dp[i][j] = min(dp[i][k]+dp[k][j]) + sum[i][j]
+dp[i][j] = min(dp[i][k]+dp[k+1][j]) + sum[i][j]
 
 O(n^2): notice:
 here w[a,c] + w[b,d] <= w[a,d] + w[b,c] because both sides are equal
@@ -45,7 +45,16 @@ Work(len) = sum(i from 1 to n-len+1) (opt[i+1][j]-opt[i][j-1]+1)
 Then over n Works, we have O(n^2)
 
 
+Problem B. Luogu https://www.luogu.com.cn/problem/P4767. 
+对于 100% 的数据，1≤P≤300，P≤V≤3000，1≤ 村庄位置 ≤10000
 
+Original DP[i][k] = min(DP[j][k-1] + w(i+1, j)), where w(i+1, j) can be computed in O(1) with the median + psums.
+
+O(V^2 P) cannot pass. 
+
+notice that 
+
+DP[i] = min(DP[j] + w(i+1, j))
 
 
 
