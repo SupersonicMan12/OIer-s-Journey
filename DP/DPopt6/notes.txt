@@ -48,13 +48,23 @@ Then over n Works, we have O(n^2)
 Problem B. Luogu https://www.luogu.com.cn/problem/P4767. 
 对于 100% 的数据，1≤P≤300，P≤V≤3000，1≤ 村庄位置 ≤10000
 
-Original DP[i][k] = min(DP[j][k-1] + w(i+1, j)), where w(i+1, j) can be computed in O(1) with the median + psums.
+Original DP[i][k] = min(DP[j][k-1] + w(j+1, i)), where w(i+1, j) can be computed in O(1) with the median + psums.
 
 O(V^2 P) cannot pass. 
 
-notice that 
+notice that w is interval monotonous and has quadrangle inequality. It can be proven that for this type of problem, DP has quadrangle inequality and satisfies
+opt(i, j) <= opt(i, j+1) <= opt(i+1, j+1) too.
 
-DP[i] = min(DP[j] + w(i+1, j))
+Then compute with increasing j, and decreasing i.
+
+This allows O(VP).
+
+Overall, remember for the following DP:
+dp[i][j] = min(dp[i][k]+dp[k+1][j]) + sum[i][j]
+dp[i][j] = min(dp[k][j-1] + w(j+1,i))
+
+If w has interval monotonous and quadrangle inequality, then we have DP quadrangle inequality as well as opt(i, j-1) <= opt(i, j) <= opt(i+1, j), which allows the reduction of one dimension (DP optimization)
+
 
 
 
