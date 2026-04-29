@@ -1,0 +1,5 @@
+brilliant solution:
+
+create and maintain persistent segment tree, treating each position as if it were a BIT position!!
+
+then to update 
