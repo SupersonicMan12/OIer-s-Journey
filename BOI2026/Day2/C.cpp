@@ -95,12 +95,22 @@ int main(){
 		}
 		for (int i = 1; i <= q; i++){
 			if (a[i] >= b[i]){
+				int ans = 1e9;
 				int l = qry(root[b[i]-1], 1, n, b[i], n);
 				int k = qry(root[n], 1, n, 1, a[i]) - qry(root[a[i]], 1, n, 1, a[i]);
 				int window = (a[i]-b[i]+1);
-				int kw = (k+window-1)/window;
-				int lw = (l+window-1)/window;
-				int ans = min(max(1+2*lw,2*kw), max(1+2*kw, 2*lw));
+				int L = (l+window-1)/window; // <= #"AB"
+				int K = (k+window-1)/window; // <= #"BA"
+				if (streakrhs[a[i]+1]) ans = 1;
+				if (streaklhs[b[i]-1]) ans = 1;
+				if (bad[n] == 0) ans = 0;
+				// A...B: of length 2r gives r pairs of AB and r-1 pairs of BA
+				ans = min(ans, max(2*K, 2*L+2));
+				// B...A: 
+				ans = min(ans, max(2*L, 2*K+2));
+				// A...A or B...B
+				if (max(L,K) == 0) ans = min(ans, 2);
+				else ans = min(ans, 2*max(L,K)+1);
 				cout << ans << '\n';
 			} else {
 				if (lhs[a[i]]==a[i] && rhs[b[i]]==b[i] && bad[b[i]]==bad[a[i]]){

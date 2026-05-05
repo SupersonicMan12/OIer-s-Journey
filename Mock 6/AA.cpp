@@ -3,12 +3,14 @@ using namespace std;
 
 long long l, r, p;
 
+const int INF = 1e9;
 const int primes[25] = {2,3,5,7,11,13,17,19,23,29,31,37,41,43,47,53,59,61,67,71,73,79,83,89,97};
 const int MAXX = 2944733;
-int num[MAXX], cnt, dp[MAXX];
+long long num[MAXX], cnt, dp[MAXX];
+bool works[MAXX];
 
 void dfs(int i, long long x){
-	if (i == 25) {
+	if (i == 25 || primes[i] > p) {
 		num[++cnt] = x;
 		return;
 	}
@@ -25,20 +27,21 @@ int main(){
 	dfs(0, 1);
 	sort(num+1, num+cnt+1);
 
-	memset(dp, 0x3f, sizeof(dp));
+	for (int i = 1; i <= cnt; i++) dp[i] = INF;
 	dp[1] = 0;
 	for (int i = 2; i <= p; i++){
-		int l = 1; // represents i*number[j]
+		int ll = 1; // represents i*number[j]
 		for (int j = 1; j <= cnt; j++){
-			while (l <= cnt && i*num[j]>num[l]) l++;
-			if (l <= cnt){
-				dp[l] = min(dp[j]+1, dp[l]);
+			while (ll <= cnt && num[j]*i>num[ll]) ll++;
+			if (ll <= cnt){
+				dp[ll] = min(dp[j]+1, dp[ll]);
+				if (dp[ll]+i <= p) works[ll] = 1;
 			}
 		}
 	}
 	int ans = 0;
 	for (int i = 1; i <= cnt; i++){
-		if (num[i] <= r && num[i] >= l && dp[i]<=p){
+		if (num[i] <= r && num[i] >= l && works[i]){
 			ans++;
 		}
 	}
