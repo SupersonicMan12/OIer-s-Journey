@@ -1,0 +1,26 @@
+Part I) subarrays where every value appears exactly B times
+
+For a fixed r, maintain the smallest valid left endpoint L such that A[l..r] has
+no value appearing more than B times. Found in O(n) using two pointers. Giving array L
+
+Then, simply check if count_x(A[l..r]) is 0 mod B
+
+For each x generate B random numbers, h[x][0], h[x][1], ..., h[x][B-1]
+such that they sum up to 0 mod M, for large M. These get assigned cyclically
+for each value x. 
+
+Then we need sum this hash over A[l..r] and if congruent to 0. Let p be prefix sum of these hashes mod M, then p[r]-p[l-1]=0 or p[r] = p[l-1], only accept those that have l >= L[r]. To implement, sort by buckets of p[r], and use two pointers to find the smallest index in bucket that has l >= L[r], and add
+
+Part II) subarrays with exactly B distinct values
+
+For a fixed r, the valid l that have exactly B distinct values form one interval: lo <= l <= hi. We only need balanced ones. Length = B*c for some c and each of the B values appears c times. 
+
+Assign each x with a distinct random hash w[x], then for A[l..r] to contain same set of B values. Also take prefix sum S[i].
+
+H = sum w[x] over the B distinct values. If A[l..r] is balanced, S[r]-S[l-1] = c*H. Then, 
+S[r]-S[l-1] = (r-l+1)/B*H 
+S[r]*B-S[l-1]*B = (r-l+1)*H
+B*S[r]-rH = B*S[l-1]-(l-1)*H
+Take F(i) = B*S[i]-i*H, again into buckets, and use the same trick as above.
+
+When new set of B values, we brute force rebucket the l's, these intervals are disjoint and add up to O(n);s
