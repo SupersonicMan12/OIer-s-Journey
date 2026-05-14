@@ -1,0 +1,33 @@
+TREAPS 101
+https://oi-wiki.org/ds/treap/
+
+BST = Binary Search Tree.
+
+1. Empty is BST
+2. Each node has at most two children, one left one right
+3. If left not empty, all values in left child subtree < this node
+4. If right not empty, all values in right child subtree >(=) this node
+5. Both left and right subtrees are BST
+
+Operations' efficiency is based on depth of tree. If degenerate case of chain of n, O(n) per op.
+
+
+Treap = BST (Tr) + Heap (eap)!!
+
+Is a BST that has each node a fixed random "priority" that is maintained in a heap way (parent <= children). We can show that the expected depth is 
+O(log n):
+
+[Let Yi,j = random variable (xi is an ancestor of xj)? 1: 0.
+
+dep(x_i) = sum(1...n)(Y_k,i)
+E(dep(x_i)) = E(sum(Y_k,i)) = sum(E(Y_k,i)) = sum(P(Y_{k,i}=1))
+
+Let Xi,j = ... ... ]
+
+Normal Treap: implemented by rotations
+
+FHQ Treap: implemented by splitting
+
+
+
+

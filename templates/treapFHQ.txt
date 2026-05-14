@@ -1,0 +1,6 @@
+TreapFHQ
+
+Two magic operations:
+merge(a, b): all of a comes before b
+split(root, k, a, b): cuts k elements into a
+
