@@ -1,0 +1,10 @@
+Key Observation: after sorting, if there is a solution, one of them must be a continuous segment of the weights.
+
+Reason: for each n, the number of elements chosen, it is >= first n, <= last n added together, then we can start from the fromer, remove first chosen and append the next one until we reach the latter. 
+
+[l1, r1]
+[l2, r2]
+[l3, r3]
+...
+[ln-1, rn-1]
+[ln, rn]
