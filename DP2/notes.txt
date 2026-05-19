@@ -1,0 +1,23 @@
+https://cp-algorithms.com/dynamic_programming/divide-and-conquer-dp.html
+
+Divide and Conquer Optimization:
+
+Standard Form: dp[i][j] = min(k < j) dp[i-1][k] + cost(k+1, j);
+k layers (i), each layer processed independently; n elements (j)
+
+Condition: (Decision Monotonicity) opt(i, j) <= opt(i, j+1):
+opt[i][1] <= opt[i][2] <= opt[i][3] <= ... <= opt[i][n]
+
+Process: instead of scanning left to right for each layer, brute force the middle element, 
+then recurse to both left and right. Each layer of recursion adds up to roughly n (a little more than), 
+for log n depth, giving totally n log n.
+
+Time complexity: O(kn^2) to O(knlogn)
+
+Hardest part is usually showing the condition. 
+
+Highly useful is the Monge Property: 
+for all a <= b <= c <= d, C(a, d) + C(b, c) >= C(a, c) + C(b, d) is a sufficient condition for 
+Decision Monotonicity
+
+Eg. 1 CSES2086.cpp

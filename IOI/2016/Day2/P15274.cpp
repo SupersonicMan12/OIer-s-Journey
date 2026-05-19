@@ -1,8 +1,9 @@
-// full solution to paint 
-
 #include <bits/stdc++.h>
 using namespace std;
-
+extern "C"
+{
+	string solve_puzzle(string s, vector<int> c);
+}
 int p[200005];
 bool dpl[200005][102];
 bool dpr[200005][102];
@@ -108,9 +109,3 @@ string solve_puzzle(string s, vector<int> CC){
 	}
 	return ans;
 }
-
-
-
-
-
-

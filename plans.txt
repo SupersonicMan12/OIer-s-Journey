@@ -1,0 +1,24 @@
+1. DFS/BFS/DSU basics
+2. Shortest paths + MST
+3. SCC + condensation DAG
+4. Bridges + articulation points
+5. EBCC / VBCC
+6. Bridge tree + block-cut tree
+7. Tree algorithms: LCA, rerooting, HLD, virtual tree
+8. Functional graphs
+9. 2-SAT
+10. Flow: Dinic, min-cut, matching
+11. Flow extensions: lower bounds, min-cost max-flow
+12. Offline connectivity with rollback DSU
+
+
+Divide and Conquer:
+1. Divide-and-conquer DP optimization
+2. Convex hull trick / Li Chao
+3. Monotone queue DP
+4. Knuth optimization
+5. Monge proof technique
+6. SMAWK only if time remains
+
+Problems:
+IOI2016#6, IOI2017#2

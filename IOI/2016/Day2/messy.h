@@ -7,81 +7,62 @@ void add_element(std::string x);
 bool check_element(std::string x);
 void compile_set();
 
-int nn;
-
-string bin_st(int x){
-	string s;
-	for (int i = nn-1; i >= 0; i--){
-		if ((x>>i)&1) s.push_back('1');
-		else s.push_back('0');
+void qry(int l, int r, int n){
+	if (l == r) return;
+	int mid = (l+r)>>1;
+	for (int i = l; i <= mid; i++){
+		string q; 
+		for (int j = 0; j < l; j++) q.push_back('1');
+		for (int j = l; j < i; j++) q.push_back('0');
+		q.push_back('1');
+		for (int j = i+1; j <= r; j++) q.push_back('0');
+		for (int j = r+1; j < n; j++) q.push_back('1');
+		add_element(q);
 	}
-	return s;
+	qry(l , mid, n);
+	qry(mid+1, r, n);
 }
 
-int cnt(int x){
-	int c = 0;
-	for (int i = nn-1; i >= 0; i--){
-		if ((x>>i)&1) c++;
+vector<int> solve(int l, int r, vector<int> val, int n){
+	if (l == r) return val;
+	int mid = (l+r)>>1;
+	vector<int> vleft, vright;
+	char st[128];
+	for (int j = 0; j < n; j++) st[j] = '1';
+	for (auto y: val) st[y] = '0';
+	for (auto x : val){
+		string s; 
+		for (int j = 0; j < x; j++) s.push_back(st[j]);
+		s.push_back('1');
+		for (int j = x+1; j < n; j++) s.push_back(st[j]);
+		if (check_element(s)){
+			vleft.push_back(x);
+		} else {
+			vright.push_back(x);
+		}
 	}
-	return c;
+	vector<int> left = solve(l, mid, vleft, n);
+	vector<int> right = solve(mid+1, r, vright, n);
+	int p = 0;
+	for (int x : left) val[p++] = x;
+	for (int x : right) val[p++] = x;
+	return val;
 }
 
 vector<int> restore_permutation(int n, int w, int r){
-	nn = n;
-	// subtask 1
-	if (n <= 8){
-		for (int i = 1; i <= n; i++){
-			string q;
-			for (int j = 1; j <= i; j++) q.push_back('1');
-			for (int j = i+1; j <= n; j++) q.push_back('0');
-			add_element(q);
-		}
-		compile_set();
-		int a[9]; a[0] = 0;
-		int N = (1<<n);
-		for (int i = 1; i < N; i++){
-			if (check_element(bin_st(i))){
-				a[cnt(i)] = i;
-			}
-		}
-		vector<int> p(n);
-		for (int i = 1; i <= n; i++){
-			int diff = a[i]-a[i-1];
-			int platz = -1;
-			while (diff) {
-				diff >>= 1; platz++;
-			}
-			platz = n-1-platz;
-			p[platz] = i-1;
-		}
-		return p;
-	} 
-	// subtask 2
-	else if (n == 32){ 
-		for (int i = 1; i <= n; i++){
-			string q;
-			for (int j = 1; j <= i; j++) q.push_back('1');
-			for (int j = i+1; j <= n; j++) q.push_back('0');
-			add_element(q);
-		}
-		compile_set();
-		long long curr = 0;
-		vector<int> p(n);
-		for (int num = 1; num <= n; num++){
-			for (int nxt = 0; nxt < n; nxt++){
-				if (curr&(1LL<<nxt)) continue;
-				long long tmp = curr|(1LL<<nxt);
-				if (check_element(bin_st(tmp))){
-					// cout << n-nxt-1 << '\n';
-					p[n-nxt-1] = num-1;
-					curr = tmp;
-					break;
-				}
-			}
-		}
-		return p;
-	}	
+	qry(0, n-1, n);
+	compile_set();
+	vector<int> cand;
+	for (int i = 0; i < n; i++) cand.push_back(i);
+	vector<int> GOTO = solve(0, n-1, cand, n);
+	vector<int> ans(n);
+	for (int i = 0; i < n; i++){
+		ans[GOTO[i]] = i;
+	}
+	return ans;
 }
+
+
 
 
 
